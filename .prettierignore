@@ -5,3 +5,4 @@ node_modules
 export
 .pnp.cjs
 .pnp.loader.mjs
+src-tauri

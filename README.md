@@ -5,6 +5,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+https://tauri.app/ko/v1/guides/getting-started/prerequisites
+
 npm run dev
 # or
 yarn dev

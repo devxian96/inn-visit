@@ -1005,6 +1005,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/api@npm:^1.5.6":
+  version: 1.5.6
+  resolution: "@tauri-apps/api@npm:1.5.6"
+  checksum: 10/cd488cdc06904126d3de9fa4cbeb730063f48eb08749ce0ad9d3422fbe3fd72776e02ed76cf5f7ebe443fbe3a56725f16979f8f7270d3d8c628b3b7efde420a1
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/cli-darwin-arm64@npm:1.5.14":
   version: 1.5.14
   resolution: "@tauri-apps/cli-darwin-arm64@npm:1.5.14"
@@ -3766,6 +3773,7 @@ __metadata:
     "@mui/material": "npm:^5.15.20"
     "@mui/material-nextjs": "npm:^5.15.11"
     "@next/eslint-plugin-next": "npm:^14.2.4"
+    "@tauri-apps/api": "npm:^1.5.6"
     "@tauri-apps/cli": "npm:^1.5.14"
     "@types/node": "npm:^20.14.9"
     "@types/react": "npm:^18.3.3"

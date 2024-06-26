@@ -5,3 +5,4 @@ node_modules
 .github
 export
 next.config.mjs
+src-tauri

@@ -1,0 +1,21 @@
+name: Build Tauri App
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Build Tauri App
+        run: npm run tauri build
