@@ -15,9 +15,11 @@ jobs:
           node-version: '20.15.0'
       - name: Install Yarn
         run: npm install -g yarn
+      - name: Install Dependencies
+        run: yarn install
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
       - name: Build Tauri App
-        run: yarn build
+        run: yarn tauri build
