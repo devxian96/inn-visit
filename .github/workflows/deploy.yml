@@ -1,8 +1,10 @@
-name: Build Tauri App
+name: Build and Release Tauri App
 
 on:
   push:
     branches: ["master"]
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -23,3 +25,22 @@ jobs:
           toolchain: stable
       - name: Build Tauri App
         run: yarn tauri build
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./src-tauri/target/release/bundle/msi/inn-visit.msi
+          asset_name: inn-visit.msi
+          asset_content_type: application/octet-stream
