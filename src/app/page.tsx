@@ -1,4 +1,5 @@
 import type { NextPage, Metadata } from 'next';
+import { Home } from '@/components/templates';
 import packageInfo from '@/package.json';
 
 export const metadata: Metadata = {
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const HomePage: NextPage = () => {
-    return <div>test</div>;
+    return <Home />;
 };
 
 export default HomePage;
