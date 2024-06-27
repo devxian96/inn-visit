@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "width": 1200,
+        "height": 740,
         "resizable": true,
-        "title": "inN 방문기",
-        "width": 800
+        "title": "inN 방문기 v3"
       }
     ]
   }

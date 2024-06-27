@@ -2,7 +2,8 @@
 
 import type { FC } from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { Stack, Input, Button } from '@mui/material';
+import { Stack, Button, Paper, TextField } from '@mui/material';
+import { LinearProgressWithLabel } from '@/components/molecules';
 
 const style = {
     wrapper: {
@@ -12,6 +13,9 @@ const style = {
 
 export const Home: FC = () => {
     const [active, setActive] = useState(false);
+    const [error, setError] = useState(false);
+    const [progress, setProgress] = useState(0);
+
     const urlRef = useRef<HTMLInputElement>(null);
     const countRef = useRef<HTMLInputElement>(null);
     const intervalRef = useRef<HTMLInputElement>(null);
@@ -21,29 +25,31 @@ export const Home: FC = () => {
     useEffect(() => {
         const startLoading = () => {
             const url = urlRef.current?.value;
-            const count = parseInt(countRef.current?.value || '', 10);
-            const interval = parseInt(intervalRef.current?.value || '', 10);
+            const count = parseInt(countRef.current?.value || '1', 10);
+            const interval = parseInt(intervalRef.current?.value || '2', 10);
             const iFrame = iFrameRef.current;
 
             if (!url || !count || !interval || !iFrame) {
                 setActive(false);
+                setError(true);
                 return;
             }
 
             let i = 0;
-            timerRef.current = window.setInterval(() => {
+            const loadNext = () => {
                 if (iFrame.contentWindow) {
-                    iFrame.src = 'about:blank';
-                    setTimeout(() => {
-                        iFrame.src = url;
-                    }, 1000); // 1초 후에 원래 URL로 설정
+                    iFrame.src = url;
+                    i += 1;
+                    setProgress((i / count) * 100);
+                    if (i < count) {
+                        timerRef.current = window.setTimeout(loadNext, interval * 1000);
+                    } else {
+                        setActive(false);
+                    }
                 }
-                i += 1;
-                if (i >= count) {
-                    clearInterval(timerRef.current!);
-                    setActive(false);
-                }
-            }, interval * 1_000);
+            };
+
+            loadNext();
         };
 
         if (active) {
@@ -52,32 +58,59 @@ export const Home: FC = () => {
 
         return () => {
             if (timerRef.current !== null) {
-                clearInterval(timerRef.current);
+                clearTimeout(timerRef.current);
             }
         };
     }, [active]);
 
     const handleClick = () => {
+        setProgress(0);
+        setError(false);
         setActive(true);
     };
 
     return (
         <Stack gap={4} sx={style.wrapper}>
-            <Input disabled={active} placeholder="접속하고자 하는 주소" type="text" inputRef={urlRef} />
+            <TextField
+                required
+                error={error}
+                disabled={active}
+                label="접속하고자 하는 주소"
+                type="text"
+                placeholder="http/https"
+                inputRef={urlRef}
+                fullWidth
+            />
             <Stack direction="row" gap={2}>
-                <Input disabled={active} placeholder="접속 횟수" type="number" inputRef={countRef} fullWidth />
-                <Input disabled={active} placeholder="몇초마다 접속" type="number" inputRef={intervalRef} fullWidth />
-                <Input disabled={active} placeholder="체류시간 초" type="number" inputRef={intervalRef} fullWidth />
+                <TextField
+                    disabled={active}
+                    label="접속 횟수"
+                    type="number"
+                    placeholder="1"
+                    inputRef={countRef}
+                    fullWidth
+                />
+                <TextField
+                    disabled={active}
+                    label="몇초마다 접속"
+                    type="number"
+                    placeholder="2"
+                    inputRef={intervalRef}
+                    fullWidth
+                />
             </Stack>
             <Stack direction="row" gap={2}>
-                <Button disabled={active} onClick={handleClick} fullWidth>
+                <Button disabled={active} onClick={handleClick} fullWidth variant="contained">
                     시작
                 </Button>
-                <Button disabled={!active} onClick={() => setActive(false)} fullWidth>
+                <Button disabled={!active} onClick={() => setActive(false)} fullWidth variant="outlined">
                     정지
                 </Button>
             </Stack>
-            <iframe width="0" height="0" style={{ display: 'none' }} title="iframe" ref={iFrameRef} />
+            <LinearProgressWithLabel value={progress} />
+            <Paper elevation={3}>
+                <iframe width="100%" height="345" title="iframe" ref={iFrameRef} style={{ border: 'none' }} />
+            </Paper>
         </Stack>
     );
 };
