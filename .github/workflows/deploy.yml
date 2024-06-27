@@ -28,3 +28,6 @@ jobs:
         with:
           name: build-artifacts
           path: ./src-tauri/target/release/bundle/msi/
+        with:
+          name: build-artifacts
+          path: ./src-tauri/target/release/bundle/nsis/
