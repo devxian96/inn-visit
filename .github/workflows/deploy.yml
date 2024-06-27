@@ -23,11 +23,13 @@ jobs:
           toolchain: stable
       - name: Build Tauri App
         run: yarn tauri build
-      - name: Upload Artifact
+      - name: Upload Artifact MSI
         uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
           path: ./src-tauri/target/release/bundle/msi/
+      - name: Upload Artifact NSIS
+        uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
           path: ./src-tauri/target/release/bundle/nsis/
